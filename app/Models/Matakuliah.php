@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Matakuliah extends Model
 {
     use HasFactory;
-
     public function jurusan()
     {
         return $this->belongsTo('App\Models\Jurusan');
@@ -18,9 +17,9 @@ class Matakuliah extends Model
     {
         return $this->belongsTo('App\Models\Dosen');
     }
-    
+
     public function mahasiswas()
     {
-        return $this->belongsTo('App\Models\Mahasiswa')->withTimesStamps;
+        return $this->belongsToMany('App\Models\Mahasiswa')->withTimestamps();
     }
 }

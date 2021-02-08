@@ -14,9 +14,9 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        //
+        $mahasiswas = Mahasiswa::with('jurusan')->orderBy('nama')->paginate(10);
+        return view('mahasiswa.index',['mahasiswas' => $mahasiswas]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -46,7 +46,11 @@ class MahasiswaController extends Controller
      */
     public function show(Mahasiswa $mahasiswa)
     {
-        //
+        $matakuliahs = $mahasiswa->matakuliahs->sortBy('nama');
+        return view('mahasiswa.show',[
+            'mahasiswa' => $mahasiswa,
+            'matakuliahs' => $matakuliahs,
+        ]);
     }
 
     /**

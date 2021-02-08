@@ -11,12 +11,12 @@ class Jurusan extends Model
 
     public function dosens()
     {
-        return $this->hisMany('App\Models\Dosen');
+        return $this->hasMany('App\Models\Dosen');
     }
 
     public function mahasiswas()
     {
-        return $this->hisMany('App\Models\Mahasiswa');
+        return $this->hasMany('App\Models\Mahasiswa');
     }
 
     public function matakuliahs()

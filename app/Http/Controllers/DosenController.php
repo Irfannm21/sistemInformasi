@@ -14,7 +14,8 @@ class DosenController extends Controller
      */
     public function index()
     {
-        //
+        $dosens = Dosen::With('jurusan')->orderBy('nama')->paginate(5);
+        return view('dosen.index',['dosens' => $dosens]);
     }
 
     /**
@@ -38,15 +39,11 @@ class DosenController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Dosen  $dosen
-     * @return \Illuminate\Http\Response
-     */
+    
+    // Cukup satu baris saja. Di sini kita memanfaatkan fitur route model binding, dimana parameter $dosen di baris 1 akan langsung terisi dengan object Dosen yang sedang di akses.
     public function show(Dosen $dosen)
     {
-        //
+        return view('dosen.show', compact('dosen'));
     }
 
     /**

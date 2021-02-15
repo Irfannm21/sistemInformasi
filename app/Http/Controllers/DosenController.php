@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Dosen;
 use Illuminate\Http\Request;
+use App\Models\Jurusan;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class DosenController extends Controller
 {
@@ -25,7 +27,8 @@ class DosenController extends Controller
      */
     public function create()
     {
-        //
+        $jurusans = Jurusan::orderBy('nama')->get();
+        return view('dosen.create',compact('jurusans'));
     }
 
     /**
@@ -36,7 +39,15 @@ class DosenController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'nid' => 'required|alpha_num|size:8|unique:dosens,nid',
+            'nama' => 'required',
+            'jurusan_id' => 'required|exists:App\Models\Jurusan,id',
+        ]);
+        Dosen::create($validateData);
+        Alert::success('Berhasil', "Dosen $request->nama berhasil dibuat");
+        // Trik agar halaman kembali ke asal
+        return redirect($request->url_asal);
     }
 
     
@@ -78,5 +89,14 @@ class DosenController extends Controller
     public function destroy(Dosen $dosen)
     {
         //
+    }
+
+    public function buatMatakuliah(Dosen $dosen)
+    {
+        $jurusans = Jurusan::orderBy('nama')->get();
+        return view('matakuliah.create',[
+            'dosen' => $dosen,
+            'jurusans' => $jurusans,
+        ]);
     }
 }

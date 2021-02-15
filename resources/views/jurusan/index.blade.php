@@ -2,12 +2,17 @@
 
 @section('content')
 <h1 class="display-4 text-center my-5">Sistem Informasi Universitas ILKOOM</h1>
-
+@auth
+  <div class="text-right pt-5">
+    <a href="{{route('jurusans.create')}}" class="btn btn-info">Tambah Jurusan</a>
+  </div>
+@endauth
 <div class="card-columns mt-3">
   @foreach($jurusans as $jurusan)
 
-  <div class="card mt-1">
+  <div class="card mt-1" id=card-{{$jurusan->id}}>
     <div class="card-body text-center">
+    <!-- engan tambahan id=card-{{$jurusan->id}} seperti di baris 5, setiap "kotak" atau card jurusan memiliki atribut id sesuai dengan $jurusan->id. -->
     <h3 class="card-title py-1">{{ $jurusan->nama }}</h3>
     <hr>
 

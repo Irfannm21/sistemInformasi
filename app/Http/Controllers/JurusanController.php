@@ -6,6 +6,7 @@ use App\Models\Jurusan;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class JurusanController extends Controller
 {   
@@ -24,7 +25,7 @@ class JurusanController extends Controller
 
     public function create()
     {
-        //
+        return view('jurusan.create');
     }
 
     /**
@@ -35,7 +36,17 @@ class JurusanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            "nama"              => "required",
+            "kepala_jurusan"    => "required",
+            "daya_tampung"      => "required|min:10|integer",
+        ]);
+
+        $jurusan = Jurusan::create($validateData);
+        Alert::success('Berhasil',"Jurusan $request->nama berhasil dibuat");
+        // erakhir, user di redirect ke halaman "/jurusans#card-{$jurusan->id}" di baris 15. Halaman '/jurusans' adalah halaman index yang menampilkan semua data jurusan. Di sini terdapat tambahan hash fragment dalam bentuk card-{$jurusan->id}. Fungsinya adalah untuk membuat efek visual dari jurusan yang baru saja ditambah
+        // Sebagai contoh, jika jurusan yang saat ini diproses memiliki id = 4, maka pada saat redirect akan menuju halaman '/jurusans#card-4'. Dalam CSS, terdapat pseudo selector:target untuk mencari element yang sedang diakses oleh hash fragment. Agar bisa bekerja, silahkan buka view index.jurusan.blade, lalu tambah sedikit kode di bagianawal card (yakni tag <div> pertama setelah perintah foreach)
+        return redirect('/jurusans#card-{$jurusan->id}');
     }
 
     /**

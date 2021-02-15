@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use App\Models\Jurusan;
+use App\Models\Matakuliah;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MahasiswaController extends Controller
 {
@@ -24,7 +27,8 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        //
+        $jurusans = Jurusan::orderBy('nama')->get();
+        return view('mahasiswa.create',compact('jurusans'));
     }
 
     /**
@@ -35,7 +39,24 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'nim' => 'required|alpha_num|size:8|unique:mahasiswas,nim',
+            'nama'  => 'required',
+            'jurusan_id' => 'required|exists:App\Models\Jurusan,id',
+        ]);
+
+        // Cek apakah daya tampung jurusan sudah penuh
+
+        $daya_tampung = Jurusan::find($request->jurusan_id)->daya_tampung;
+        $total_mahasiswa = Mahasiswa::where('jurusan_id',$request->jurusan_id)->count();
+        if($total_mahasiswa >= $daya_tampung){
+            Alert::error('Pendaftaran Gagal', 'Sudah Melebihi daya Tampung');
+            return back()->withInput();
+        }
+
+        Mahasiswa::create($validateData);
+        Alert::Success('Berhasil',"Mahasiswa $request->nama berhasil dibuat");
+        return redirect($request->url_asal);
     }
 
     /**
@@ -85,5 +106,43 @@ class MahasiswaController extends Controller
     public function destroy(Mahasiswa $mahasiswa)
     {
         //
+    }
+
+    public function ambilMatakuliah(Mahasiswa $mahasiswa)
+    {
+        // Ambil semua matakuliah dari jurusan yang sama dengan mahasiswa
+        $matakuliahs = Matakuliah::where('jurusan_id',$mahasiswa->jurusan_id)
+                        ->orderBy('nama')->get();
+
+        // Buat Array dari daftar jurusan yang sudah di ambil mahasiswa
+        // ini akan di pakai proses repopulate form
+        $matakuliahs_sudah_diambil = $mahasiswa->pluck('id')->all();
+
+        return view('mahasiswa.ambil-matakuliah',
+        [
+            'mahasiswa' => $mahasiswa,
+            'matakuliahs' => $matakuliahs,
+            'matakuliahs_sudah_diambil' => $matakuliahs_sudah_diambil,
+        ]);
+    }
+    
+    public function prosesAmbilMatakuliah(Request $request, Mahasiswa $mahasiswa)
+    {
+        
+        // Ambil semua id matakuliah untuk jurusan yang sama dengan mahasiswa.
+        $matakuliah_jurusan = Matakuliah::where('jurusan_id',$mahasiswa->jurusan_id)
+                            ->pluck('id')->toArray();
+
+        $validateData = $request->validate([
+           'matakuliah.*' => 'distinct|in:'.implode(',',$matakuliah_jurusan), 
+        ]);
+
+        // Input ke Database
+        $mahasiswa->matakuliahs()->sync($validateData['matakuliah'] ?? []);
+
+        Alert::success('Berhasil',"Terdapat " .
+                        count($validateData['matakuliah'] ?? []). 
+                        " Matakuliah yang diambil $mahasiswa->nama");  
+        return redirect(route('mahasiswas.show', ['mahasiswa' => $mahasiswa->id]));
     }
 }

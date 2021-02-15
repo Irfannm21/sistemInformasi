@@ -4,7 +4,11 @@
 <h1 class="display-4 text-center my-5" id="judul">
   Mata Kuliah Universitas ILKOOM
 </h1>
-
+  <div class="text-right py-5">
+      @auth 
+        <a href="{{Route('matakuliahs.create')}}" class="btn btn-info">Tambah Matakuliah</a>
+      @endauth
+  </div>
 <table class="table table-striped">
   <thead>
     <tr>

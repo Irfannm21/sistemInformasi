@@ -6,7 +6,7 @@
 </h1>
   <div class="text-right py-4">
   @auth
-  <a href="{{ route('dosens.create')}}" class="btn btn-info">Tambah Dosen</a>
+  <a href="{{ route('dosens.create')}}" class="btn btn-secondary">Tambah Dosen</a>
   @endauth
   </div>
 <table class="table table-striped">
@@ -16,11 +16,14 @@
       <th>NID</th>
       <th>Nama Dosen</th>
       <th>Jurusan Dosen</th>
+      @auth 
+        <th>Action</th>
+      @endauth
     </tr>
   </thead>
   <tbody>
     @foreach ($dosens as $dosen)
-    <tr>
+    <tr id="row-{{$dosen->id}}">
       <th>{{$dosens->firstItem() + $loop->iteration - 1}}</th>
       <td>{{$dosen->nid}}</td>
       <td>
@@ -28,6 +31,11 @@
         {{$dosen->nama}}</a>
       </td>
       <td>{{$dosen->jurusan->nama}}</td>
+      @auth 
+        <td>
+          <a href="{{ route('dosens.edit',['dosen' => $dosen->id])}}" class="btn btn-secondary" title="Edit Dosen">Edit</a>
+        </td>
+      @endauth
     </tr>
     @endforeach
   </tbody>

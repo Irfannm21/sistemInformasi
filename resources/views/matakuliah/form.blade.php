@@ -34,6 +34,18 @@
 <div class="form-group row">
   <label for="jurusan_id" class="col-md-3 col-form-label text-md-right">
     Jurusan </label>
+    @if ( ($tombol == "Update") AND ($matakuliah->mahasiswas->count() > 0 ) )
+      <div class="col-md-6 d-flex align-items-center">
+          <div>{{$matakuliah->jurusan->nama}}
+              <small>
+                  <i>(tidak bisa diubah karena sudan diambil {{$matakuliah->jurusan_id}} mahasiswa</i>
+                </small>
+            </div>
+      </div>
+      <!-- Kirim bilai jurusan awal agar tidak bermasalah dengan validasi -->
+      <input type="hidden" name="jurusan_id" id="jurusan_id" value="{{$matakuliah->jurusan_id}}">
+      @else
+      <!-- untuk form create atau mahasiswa sebelum mengambil kuliah -->
   <div class="col-md-6">
     <select name="jurusan_id" id="jurusan_id"
     class="custom-select col-md-5 @error('jurusan_id') is-invalid @enderror">
@@ -51,6 +63,7 @@
     </span>
     @enderror
   </div>
+  @endif
 </div>
 
 <div class="form-group row">

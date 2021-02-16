@@ -82,7 +82,14 @@ class MatakuliahController extends Controller
      */
     public function edit(Matakuliah $matakuliah)
     {
-        //
+        $jurusans = Jurusan::orderBy('nama')->get();
+        $dosens   = Dosen::orderBy('nama')->get();
+
+        return view ('matakuliah.edit',[
+            'matakuliah' => $matakuliah,
+            'jurusans' => $jurusans,
+            'dosens'    => $dosens,
+        ]);
     }
 
     /**
@@ -94,7 +101,26 @@ class MatakuliahController extends Controller
      */
     public function update(Request $request, Matakuliah $matakuliah)
     {
-        //
+        
+        $validateData = $request->validate([
+            'kode' => 'required|alpha_num|size:5|unique:matakuliahs,kode,' . $matakuliah->id,
+            'nama'  => 'required',
+            'dosen_id' => 'required|exists:App\Models\Dosen,id',
+            'jurusan_id' => 'required|exists:App\Models\Jurusan,id',
+            'jumlah_sks' => 'required|digits_between:1,6',
+        ]);
+
+        // Antipasi jika ada inputan jurusan_id yang sudah di hidden
+        if ( ($matakuliah->mahasiswas()->count() > 0 ) AND ($matakuliah->jurusan_id != $request->jurusan_id )) 
+        {
+            Alert::success('Update Gagal',"Jurusan tidak bisa di ubah");
+            return back();
+        } 
+
+        $matakuliah->update($validateData);
+        Alert::success('berhasil',"Matakuliah $request->nama telah di update");
+        // trik agar halaman kembali ke awal
+        return redirect($request->url_asal);
     }
 
     /**

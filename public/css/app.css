@@ -10155,3 +10155,25 @@ table td a {
 #footer-icon a:hover {
   text-decoration: none;
 }
+
+.card .btn-action {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.card .btn-action {
+  opacity: 0;
+}
+
+.card:hover .btn-action {
+  opacity: 0.7;
+}
+
+.card .btn-action:hover {
+  opacity: 1 !important;
+}
+
+tr:target {
+  background-color: lightyellow !important;
+}

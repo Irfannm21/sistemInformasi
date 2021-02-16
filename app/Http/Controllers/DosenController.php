@@ -65,7 +65,8 @@ class DosenController extends Controller
      */
     public function edit(Dosen $dosen)
     {
-        //
+        $jurusans = Jurusan::orderBy('nama')->get();
+        return view('dosen.edit',['dosen' => $dosen, 'jurusans' => $jurusans]);
     }
 
     /**
@@ -77,7 +78,16 @@ class DosenController extends Controller
      */
     public function update(Request $request, Dosen $dosen)
     {
-        //
+        $validateData = $request->validate([
+            'nid'           => 'required|alpha_num|size:8|unique:dosens,nid,'.$dosen->id,
+            'nama'          => 'required',
+            'jurusan_id'    => 'required|exists:App\Models\Jurusan,id',
+        ]);
+
+        $dosen->update($validateData);
+        Alert::success('Berhasil',"Dosen $request->nama berhasil di update");
+        // Trik Agar halaman ke awal
+        return redirect($request->url_asal);
     }
 
     /**

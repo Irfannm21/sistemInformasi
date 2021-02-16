@@ -11,6 +11,11 @@
   @foreach($jurusans as $jurusan)
 
   <div class="card mt-1" id=card-{{$jurusan->id}}>
+  @auth 
+      <div class="btn-group btn-action">
+        <a href="{{ route('jurusans.edit',['jurusan' => $jurusan->id])}}" class="btn btn-primary d-inline-block" title="Edit Jurusan"><i class="fa fa-edit fa-fw"></i></a>
+      </div>
+  @endauth
     <div class="card-body text-center">
     <!-- engan tambahan id=card-{{$jurusan->id}} seperti di baris 5, setiap "kotak" atau card jurusan memiliki atribut id sesuai dengan $jurusan->id. -->
     <h3 class="card-title py-1">{{ $jurusan->nama }}</h3>

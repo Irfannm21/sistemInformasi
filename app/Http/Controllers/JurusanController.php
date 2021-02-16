@@ -68,7 +68,7 @@ class JurusanController extends Controller
      */
     public function edit(Jurusan $jurusan)
     {
-        //
+        return view('jurusan.edit',compact('jurusan'));
     }
 
     /**
@@ -80,7 +80,15 @@ class JurusanController extends Controller
      */
     public function update(Request $request, Jurusan $jurusan)
     {
-        //
+        $validateData = $request->validate([
+            'nama'             => 'required',
+            'kepala_jurusan'   => 'required',
+            'daya_tampung'     => 'required|min:10|integer',
+        ]);
+
+        $jurusan->update($validateData);
+        Alert::success('Berhasil','Jurusan $request->nama telah di update');
+        return redirect('/jurusans#card-{$jurusan->id}');
     }
 
     /**

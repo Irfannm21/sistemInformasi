@@ -6,7 +6,7 @@
 </h1>
   <div class="text-right py-5">
       @auth 
-        <a href="{{Route('matakuliahs.create')}}" class="btn btn-info">Tambah Matakuliah</a>
+        <a href="{{Route('matakuliahs.create')}}" class="btn btn-secondary">Tambah Matakuliah</a>
       @endauth
   </div>
 <table class="table table-striped">
@@ -18,11 +18,14 @@
       <th>Dosen Pengajar</th>
       <th>Jumlah SKS</th>
       <th>Jurusan</th>
+      @auth 
+        <th>Action</th>
+      @endauth
     </tr>
   </thead>
   <tbody>
     @foreach ($matakuliahs as $matakuliah)
-    <tr>
+    <tr id="row-{{$matakuliah->id}}">
       <th>{{$matakuliahs->firstItem() + $loop->iteration - 1}}</th>
       <td>{{$matakuliah->kode}}</td>
       <td>
@@ -36,6 +39,11 @@
       </td>
       <td>{{$matakuliah->jumlah_sks}}</td>
       <td>{{$matakuliah->jurusan->nama}}</td>
+      <td>
+          @auth 
+            <a href="{{ route('matakuliahs.edit',['matakuliah' => $matakuliah->id])}}" class="btn btn-secondary" title="Edit Matakuliah">Edit</a>
+          @endauth
+      </td>
     </tr>
     @endforeach
   </tbody>

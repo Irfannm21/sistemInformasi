@@ -34,6 +34,16 @@
 <div class="form-group row">
   <label for="jurusan_id" class="col-md-3 col-form-label text-md-right">
     Jurusan </label>
+    <!-- Jurusan Tidak bisa diubah jika ada matakuliah yg diambil -->
+    @if( ( $tombol == 'Update') AND ($mahasiswa->matakuliahs->count() > 0)) 
+        <div class="col-md-6 d-flex align-items-center">
+        <div class="">{{$mahasiswa->jurusan->nama}}
+          <small><i>(Tidak bisa diubah karena mahasiswa sudah mengambil {{$mahasiswa->matakuliahs->count() }} matakuliah)</i></small> 
+        </div>
+        </div>
+        <!-- Kirim jurusan awl agar tidak bermasalah dengan validaasi -->
+        <input type="hidden" name="jurusan_id" id="jurusan_id" value="{{$mahasiswa->jurusan->id}}">
+    @else
   <div class="col-md-6">
     <select name="jurusan_id" id="jurusan_id"
     class="custom-select col-md-5 @error('jurusan_id') is-invalid @enderror">
@@ -51,6 +61,7 @@
     </span>
     @enderror
   </div>
+  @endif
 </div>
 
 {{-- Trik agar bisa kembali ke halaman yang klik --}}

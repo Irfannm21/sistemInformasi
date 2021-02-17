@@ -99,7 +99,9 @@ class JurusanController extends Controller
      */
     public function destroy(Jurusan $jurusan)
     {
-        //
+        $jurusan->delete();
+        Alert::success('Berhasil',"Jurusan $jurusan->nama telah dihapus");
+        return redirect('/jurusans');
     }
 
     public function jurusanDosen($jurusan_id)
@@ -126,5 +128,13 @@ class JurusanController extends Controller
           'mahasiswas' => $mahasiswas,
           'nama_jurusan' => $nama_jurusan,
       ]);
+    }
+
+    // Karena menggunakan except, maka selain method index(), jurusanDosen() dan jurusanMahasiswa(),tidak bisa diakses secara bebas (user harus login terlebih dahulu). 
+    public function __construct()
+    {
+        $this->middleware('auth')->except([
+            'index','jurusanDosen','jurusanMahasiswa'
+        ]);
     }
 }

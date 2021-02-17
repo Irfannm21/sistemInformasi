@@ -34,6 +34,10 @@
      <td>
      @auth 
         <a href="{{ route('mahasiswas.edit',['mahasiswa' => $mahasiswa->id])}}" class="btn btn-secondary" title="Edit Mahasiswa"> Edit</a>
+        <form action="{{ route('mahasiswas.destroy',['mahasiswa' => $mahasiswa->id])}}" method="post" class="d-inline">
+          @csrf @method('DELETE')
+          <button type="submit" class="btn btn-danger shadow btn-hapus" title="Hapus Mahasiswa" data-name="{{$mahasiswa->nama}}">Hapus</button>
+        </form>
       @endauth
      </td>
     </tr>

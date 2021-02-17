@@ -1,19 +1,15 @@
-@extends('layouts.app')
-@section('content')
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
 <div class="pt-3 d-flex align-items-center">
   <h1 class="h2 mr-4">Biodata Dosen</h1>
-    @auth 
-          <a href="{{ route('dosens.edit',['dosen' => $dosen->id])}}" class="btn btn-secondary mr-1" title="Edit Dosen">Edit</a>
-          <form action="{{route('dosens.destroy',['dosen' => $dosen->id])}}" method="post" class="d-inline">
-          @csrf @method('DELETE')
-          <button type="submit" class="btn btn-danger shadow-none btn-hapus" title="Hapus Dosen" data-name="{{$dosen->nama}}" data-table="dosen">
-            Hapus
-          </button>
-          <a href="{{ route('report-preview', ['dosen' => $dosen->id])}}"
-    class="btn btn-info">Print</a>
-         </form>
-      @endauth
+
 </div>
 <hr>
 <ul>
@@ -37,4 +33,5 @@
   <a href="{{ route('buat-matakuliah', ['dosen' => $dosen->id])}}"
     class="btn btn-info" title="Buat Mata Kuliah">Buat Mata Kuliah</a>
 @endauth
-@endsection
+</body>
+</html>

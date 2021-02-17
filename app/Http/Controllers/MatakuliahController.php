@@ -131,7 +131,9 @@ class MatakuliahController extends Controller
      */
     public function destroy(Matakuliah $matakuliah)
     {
-        //
+        $matakuliah->delete();
+        Alert::success('Berhasil','Matakuliah $matakuliah->nama berhasil dihapus');
+        return redirect('/matakuliahs');
     }
 
     public function buatMatakuliah(Dosen $dosen)
@@ -174,5 +176,12 @@ class MatakuliahController extends Controller
         Alert::success('Berhasil', "Terdapat" . count($validateData['mahasiswa'] ?? []) . " mahasiswa yang mengambil $matakuliah->nama ");
         return redirect(route('matakuliahs.show',
                         ['matakuliah' => $matakuliah->id]));
+    }
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except([
+            'index','show'
+        ]);
     }
 }

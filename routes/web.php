@@ -8,6 +8,8 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MatakuliahController;
 use App\Http\Controllers\MahasiswaController;
 
+use App\Http\Controllers\PencarianController;
+
 Route::get('/', [JurusanController::class, 'index']);
 
 Route::resource('jurusans',JurusanController::class);
@@ -31,7 +33,6 @@ Route::get('/buat-matakuliah/{dosen}', [MatakuliahController::class,
            'buatMatakuliah'])->name('buat-matakuliah');
 
 
-
 // Route untuk tombol "Ambil Matakuliah" di halaman show mahasiswa
 
 Route::get('/mahasiswas/ambil-matakuliah/{mahasiswa}',
@@ -53,3 +54,11 @@ Route::get('/matakuliahs/daftarkan-mahasiswa/{matakuliah}',
 Route::post('/matakuliahs/daftarkan-mahasiswa/{matakuliah}',
            [MatakuliahController::class,'prosesDaftarkanMahasiswa'])
            ->name('proses-daftarkan-mahasiswa');
+
+// Route Search
+// Route pertama dipakai untuk menampilkan halaman form pencarian, sedangkan route kedua untuk pemrosesan form
+Route::get('/pencarian',[PencarianController::class,'index']);
+Route::get('/pencarian/proses',[PencarianController::class,'proses']);
+
+ // Route untuk print
+ Route::get('/printPreview/{dosen}',[DosenController::class,'reportPreview'])->name('report-preview');

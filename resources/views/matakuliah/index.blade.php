@@ -42,6 +42,12 @@
       <td>
           @auth 
             <a href="{{ route('matakuliahs.edit',['matakuliah' => $matakuliah->id])}}" class="btn btn-secondary" title="Edit Matakuliah">Edit</a>
+            <form action="{{route('matakuliahs.destroy',['matakuliah' => $matakuliah->id])}}" method="post" class="d-inline">
+              @csrf @method('DELETE')
+              <button type="submit" class="btn btn-danger shadow-none btn-hapus" title="Hapus Mahasiswa" data-name="{{$matakuliah->nama}}">
+                Hapus
+              </button>
+            </form>
           @endauth
       </td>
     </tr>

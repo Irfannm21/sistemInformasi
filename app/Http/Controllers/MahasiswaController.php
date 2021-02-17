@@ -127,7 +127,9 @@ class MahasiswaController extends Controller
      */
     public function destroy(Mahasiswa $mahasiswa)
     {
-        //
+        $mahasiswa->delete();
+        Alert::success('Berhasil', "Mahasiswa $mahasiswa->nama Berhasil dihapus");
+        return redirect('/mahasiswas');
     }
 
     public function ambilMatakuliah(Mahasiswa $mahasiswa)
@@ -166,5 +168,12 @@ class MahasiswaController extends Controller
                         count($validateData['matakuliah'] ?? []). 
                         " Matakuliah yang diambil $mahasiswa->nama");  
         return redirect(route('mahasiswas.show', ['mahasiswa' => $mahasiswa->id]));
+    }
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except([
+            'index','show'
+        ]);
     }
 }

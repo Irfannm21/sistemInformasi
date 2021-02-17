@@ -4,7 +4,7 @@
 <h1 class="display-4 text-center my-5">Sistem Informasi Universitas ILKOOM</h1>
 @auth
   <div class="text-right pt-5">
-    <a href="{{route('jurusans.create')}}" class="btn btn-info">Tambah Jurusan</a>
+    <a href="{{route('jurusans.create')}}" class="btn btn-secondary">Tambah Jurusan</a>
   </div>
 @endauth
 <div class="card-columns mt-3">
@@ -14,6 +14,12 @@
   @auth 
       <div class="btn-group btn-action">
         <a href="{{ route('jurusans.edit',['jurusan' => $jurusan->id])}}" class="btn btn-primary d-inline-block" title="Edit Jurusan"><i class="fa fa-edit fa-fw"></i></a>
+        <form action="{{Route('jurusans.destroy',['jurusan' => $jurusan->id])}}" method="post">
+          @csrf @method('DELETE')
+          <button type="submit" class="btn btn-danger shadow-none btn-hapus" title="Hapus Jurusan" data-name="{{$jurusan->nama}}" data-table="jurusan">
+            <i class="fa fa-trash fw"></i>
+          </button>
+        </form>
       </div>
   @endauth
     <div class="card-body text-center">

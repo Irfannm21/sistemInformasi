@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        toast('Selamat Datang ' .auth()->user()->name,'success')->timerProgressBar()->autoClose(3000);
+        return redirect('/jurusans');
     }
 }

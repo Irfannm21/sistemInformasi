@@ -6,6 +6,7 @@ use App\Models\Dosen;
 use Illuminate\Http\Request;
 use App\Models\Jurusan;
 use RealRashid\SweetAlert\Facades\Alert;
+use PDF;
 
 class DosenController extends Controller
 {
@@ -98,7 +99,9 @@ class DosenController extends Controller
      */
     public function destroy(Dosen $dosen)
     {
-        //
+        $dosen->delete();
+        Alert::success('Berhasil',"Dosen $dosen->nama telah dihapus");
+        return redirect('/dosens');
     }
 
     public function buatMatakuliah(Dosen $dosen)
@@ -109,4 +112,24 @@ class DosenController extends Controller
             'jurusans' => $jurusans,
         ]);
     }
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except([
+            'index','show'
+        ]);
+    }
+
+    public function reportPreview(Dosen $dosen)
+    {
+        $jurusans = Jurusan::orderBy('nama')->get();
+        $data = [
+            'dosen' => $dosen,
+            'jurusans' => $jurusans,
+        ];
+
+        $pdf = PDF::loadView('dosen.preview',$data);
+        return $pdf->stream();
+    }
+
 }

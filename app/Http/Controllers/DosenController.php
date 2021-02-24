@@ -129,6 +129,7 @@ class DosenController extends Controller
         ];
 
         $pdf = PDF::loadView('dosen.preview',$data);
+        $pdf = PDF::loadView('dosen.barcode',$data)->setPaper('A5','Potrait');
         return $pdf->stream();
     }
 

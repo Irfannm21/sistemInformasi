@@ -29,9 +29,9 @@
     </li>
     @endforeach
 </ol>
-@auth
-  <a href="{{ route('buat-matakuliah', ['dosen' => $dosen->id])}}"
-    class="btn btn-info" title="Buat Mata Kuliah">Buat Mata Kuliah</a>
-@endauth
+<!-- <?php
+    echo DNS1D::getBarcodeHTML('13212321312', 'C128A');
+?> -->
 </body>
 </html>
+
